@@ -31,21 +31,45 @@ dt2 <- rbind(feb1,feb2)
 rm(dt)
 
 # Create a new column
-dt2$newdate <- paste(dt2$Date,dt2$Time)
+dt2$datetime <- paste(dt2$Date,dt2$Time)
 
 # Convert the newdate to POSIX
 # The reason to convert newdate from character to POSIX is,
 # POSIX actually is a integer number
-dt2$newdate <- strptime(dt2$newdate,"%d/%m/%Y %H:%M:%S")
+dt2$datetime <- strptime(dt2$datetime,"%d/%m/%Y %H:%M:%S")
 
 # Convert Global_active_power to numeric
 dt2$Global_active_power <- as.numeric(dt2$Global_active_power)
+
+dt2$Voltage <- as.numeric(dt2$Voltage)
+
+dt2$Global_reactive_power <- as.numeric(dt2$Global_reactive_power)
+
+dt2$Sub_metering_1 <- as.numeric(dt2$Sub_metering_1)
+dt2$Sub_metering_2 <- as.numeric(dt2$Sub_metering_2)
+dt2$Sub_metering_3 <- as.numeric(dt2$Sub_metering_3)
+
 # Get summary of Global_active_power
-summary(dt2$Global_active_power)
 
-png(filename = "plot1.png",width = 480, height = 480)
+png(filename = "plot4.png",width = 480, height = 480)
 
-hist(dt2$Global_active_power,xlab="Global Active Power (kilowatts)",
-     main="Global Active Power",col="red")
+# Create 2 row 2 column panel
+par(mfrow=c(2,2))
+
+with(dt2,plot(datetime,Global_active_power,type="l",ann=FALSE))
+title(ylab="Global Active Power")
+
+with(dt2,plot(datetime,Voltage,type="l",ann=TRUE))
+
+with(dt2,plot(datetime,Sub_metering_1, ann=FALSE, type="n"))
+title(ylab="Energy sub metering")
+with(dt2,lines(datetime,Sub_metering_1,type="l"))
+with(dt2,lines(datetime,Sub_metering_2,type="l",col="red"))
+with(dt2,lines(datetime,Sub_metering_3,type="l",col="blue"))
+legend("topright",col=c("black","red","blue"),
+       legend=c("Sub_meterting_1","Sub_metering_2","Sub_metering_3"),
+       lty=c(1,1,1))
+
+with(dt2,plot(datetime,Global_reactive_power,type="l",ann=TRUE))
+
 dev.off()
-

@@ -38,14 +38,17 @@ dt2$newdate <- paste(dt2$Date,dt2$Time)
 # POSIX actually is a integer number
 dt2$newdate <- strptime(dt2$newdate,"%d/%m/%Y %H:%M:%S")
 
-# Convert Global_active_power to numeric
+# Convert 
 dt2$Global_active_power <- as.numeric(dt2$Global_active_power)
 # Get summary of Global_active_power
 summary(dt2$Global_active_power)
 
-png(filename = "plot1.png",width = 480, height = 480)
+png(filename = "plot2.png",width = 480, height = 480)
 
-hist(dt2$Global_active_power,xlab="Global Active Power (kilowatts)",
-     main="Global Active Power",col="red")
+# par(mar=c(2,4,1,1))
+with(dt2,plot(newdate,Global_active_power,type="l",
+              ann=FALSE))
+     
+title(ylab="Global Active Power (kilowatts)")
+
 dev.off()
-

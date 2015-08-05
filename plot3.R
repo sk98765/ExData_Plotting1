@@ -38,14 +38,26 @@ dt2$newdate <- paste(dt2$Date,dt2$Time)
 # POSIX actually is a integer number
 dt2$newdate <- strptime(dt2$newdate,"%d/%m/%Y %H:%M:%S")
 
-# Convert Global_active_power to numeric
-dt2$Global_active_power <- as.numeric(dt2$Global_active_power)
-# Get summary of Global_active_power
-summary(dt2$Global_active_power)
+# Convert Sub_metering_1, Sub_metering_2 and Sub_metering_3 to numeric
+dt2$Sub_metering_1 <- as.numeric(dt2$Sub_metering_1)
+dt2$Sub_metering_2 <- as.numeric(dt2$Sub_metering_2)
+dt2$Sub_metering_3 <- as.numeric(dt2$Sub_metering_3)
 
-png(filename = "plot1.png",width = 480, height = 480)
+# Get summary of Sub_metering
+# summary(dt2$Sub_metering_1)
+# summary(dt2$Sub_metering_2)
+# summary(dt2$Sub_metering_3)
 
-hist(dt2$Global_active_power,xlab="Global Active Power (kilowatts)",
-     main="Global Active Power",col="red")
+png(filename = "plot3.png",width = 480, height = 480)
+
+# change the margin of the plot to hide xlab 
+# bottom lines is the first one in c(bottom,left,top,right)
+with(dt2,plot(newdate,Sub_metering_1,type="n",ann=FALSE))
+title(ylab="Energy sub metering")
+with(dt2,lines(newdate,Sub_metering_1,type="l"))
+with(dt2,lines(newdate,Sub_metering_2,type="l",col="red"))
+with(dt2,lines(newdate,Sub_metering_3,type="l",col="blue"))
+legend("topright",col=c("black","red","blue"),
+       legend=c("Sub_meterting_1","Sub_metering_2","Sub_metering_3"),
+       lty=c(1.5,1.5,1.5))
 dev.off()
-
