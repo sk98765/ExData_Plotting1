@@ -65,9 +65,13 @@ r2 <- range(dt2$Sub_metering_2)
 r3 <- range(dt2$Sub_metering_3)
 v <- c(r1[2],r2[2],r3[2])
 ind <- which.max(v)
-subsetstr <- paste("Sub_metering_",ind)
-
-#with(dt2,plot(datetime,Sub_metering_1,type="n",ann=FALSE))
+if (ind == 1) {
+    with(dt2,plot(datetime,Sub_metering_1,type="n",ann=FALSE))
+ } else if (ind == 2) {
+    with(dt2,plot(datetime,Sub_metering_2,type="n",ann=FALSE))
+ } else {
+    with(dt2,plot(datetime,Sub_metering_3,type="n",ann=FALSE))
+ }
 
 title(ylab="Energy sub metering")
 with(dt2,lines(datetime,Sub_metering_1,type="l"))
